@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <title>SKIN SHOPPING!</title>
+  
+  <a href="conta.html">ir pra la</a>
+  
+  
+  <h3>NEW SKINS </h3>
+  
+  
+    <ul class="horizontal-list" id="listaHorizontal"></ul>
+   
+    
+  <h3>MOST LIKED</h3>
+  
+  
+  
+  </ul>
+    
+  <style>
+        /* Estilo para a lista horizontal */
+        
+    
+.horizontal-list {
+            display: flex;
+            list-style-type: none;
+            overflow-x: auto;
+        }
+
+        .item {
+            margin: 3px;
+            padding: 0px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .item img {
+            width: 70px;
+            height: 100px;
+            display: block;
+            margin: 0 auto;
+        }
+
+
+  
+    </style>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+ <script type="module">
+
+
+
+
+var firebaseConfig = {
+  apiKey: "AIzaSyClygQn6bunH0GSV2FMdBJO1WtXRQlJWqk",
+  authDomain: "preep-a46d1.firebaseapp.com",
+  databaseURL: "https://preep-a46d1-default-rtdb.firebaseio.com",
+  projectId: "preep-a46d1",
+  storageBucket: "preep-a46d1.appspot.com",
+  messagingSenderId: "458362280928",
+  appId: "1:458362280928:web:e8a19aca618f3d51a32985",
+  measurementId: "G-XW402TQ907"
+};
+
+
+
+
+
+
+
+
+
+  // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
+
+
+  
+// Referência para o nó no Firebase onde os dados estão armazenados
+const databaseRef = firebase.database().ref('novos');
+
+// Função para recuperar os dados do Firebase e preencher a lista horizontal
+function preencherListaHorizontal() {
+    const listaHorizontal = document.getElementById('listaHorizontal');
+
+    // Escutar o evento "value" no Firebase para recuperar os dados sempre que houver alguma mudança
+    databaseRef.on('value', (snapshot) => {
+        // Limpar a lista antes de preenchê-la novamente
+        listaHorizontal.innerHTML = '';
+
+        // Obter os dados do snapshot do Firebase
+        const dados = snapshot.val();
+
+        // Verificar se há dados antes de prosseguir
+        if (dados) {
+            // Loop pelos dados e criar elementos de lista para cada item
+            for (const chave in dados) {
+                const item = dados[chave];
+
+                // Criar o elemento de lista para cada item
+                const liElement = document.createElement('li');
+                liElement.classList.add('item');
+
+                // Criar a imagem
+                const imgElement = document.createElement('img');
+                imgElement.src = item.foto; // Substitua 'imagemUrl' pelo campo que contém a URL da imagem
+                liElement.appendChild(imgElement);
+
+                // Criar o texto
+                const textElement = document.createElement('p');
+                textElement.textContent = item.titulo; // Substitua 'texto' pelo campo que contém o texto
+                liElement.appendChild(textElement);
+              
+   const pessoa = {
+  foto: item.foto,
+  skin: item.skin,
+  tipo: item.tipo,
+  titulo: item.titulo
+}; 
+              
+  //CLICK DA LISTA
+              
+     liElement.addEventListener('click', () => {
+          alert(JSON.stringify(pessoa));
+       
+       
+//function enviarDadosParaAndroid()
+       
+ var dados = JSON.stringify(pessoa);
+        window.AndroidInterface.receberDadosDoHTML(dados);       
+       
+       
+       
+        });
+              
+              
+
+                // Adicionar o elemento de lista à lista horizontal
+                listaHorizontal.appendChild(liElement);
+            }
+        }
+    });
+}
+
+// Chamar a função para preencher a lista horizontal quando a página carregar
+window.addEventListener('load', preencherListaHorizontal);
+
+
+  
+
+</script/>
+  
+  
+  
+  
+  
+  
+</head>
+<body>
+ 
+</body>
+</html>
